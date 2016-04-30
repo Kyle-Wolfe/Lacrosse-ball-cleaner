@@ -1,24 +1,26 @@
 // Define the pins that power the motors.
-const int Motor1Pin1 = 5;
-const int Motor1Pin2 = 6;
-const int Motor2Pin1 = 9;
-const int Motor2Pin2 = 10;
+const int Motor2Pin1 = 5;
+const int Motor2Pin2 = 6;
+const int Motor1Pin1 = 9;
+const int Motor1Pin2 = 10;
 
 // Define the pins for the limit switches
 const int Switch1Pin = 8;
 
 //variable for switch state
-int switch1State = 0;
+//int switch1State = 0;
 
 // Initialize timer variables
 boolean motors_on = false;
-long sandingDuration = 6 * 1000; //seconds * conversion to milliseconds
+long sandingDuration = 30 * 1000; //seconds * conversion to milliseconds
 long timeGoal = 0;
 int test_read = 1;
+long motor_delay = .5 * 1000; //seconds * conversion to milliseconds
 
 //setup program
 void setup() {
   Serial.begin(9600); //start serial so prinitng can occur
+  Serial.println();
   initializeMotors(); //initialize all motors
   initializeSwitches(); //initialize all sensors
 }
@@ -26,12 +28,15 @@ void setup() {
 //main program loop
 void loop() {
   //read state of switch
+  /*
   //delay(500);
   //digitalRead(Switch1Pin);
   //Serial.println(switch1State);
   //check to see if the ball has hit the limit switch
   //if (Switch1Pin == 1) 
-  
+  */
+
+  //test_read = Serial.read();
   if (test_read == 1){
     //set time to turn off motors
     timeGoal = sandingDuration + millis();
@@ -73,11 +78,14 @@ void startMotors() {
   //keep track of motors being on
   motors_on = true;
   //motor 1
-  digitalWrite(Motor1Pin1, LOW);
-  digitalWrite(Motor1Pin2, HIGH);
+  digitalWrite(Motor1Pin1, HIGH);
+  //digitalWrite(Motor1Pin2, HIGH);
+  //wait for motor 1 to start
+  delay(500);
   //motor 2
-  digitalWrite(Motor2Pin1, LOW);
-  digitalWrite(Motor2Pin2, HIGH);
+  digitalWrite(Motor2Pin1, HIGH);
+  //digitalWrite(Motor2Pin2, HIGH);
+  test_read=0;
 }
 
 //stop all motors
